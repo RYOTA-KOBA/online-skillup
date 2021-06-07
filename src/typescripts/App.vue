@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      <img class="logo" src="./img/logo.jpg" alt="ロゴ" />
+      <!-- <img class="logo" src="./img/logo.jpg" alt="ロゴ" /> -->
       <span class="sample">サンプルコード</span>
     </p>
     <MyComponent :message="$data.message" />
@@ -58,7 +58,7 @@ export default {
   width: 40px;
 }
 
-.sample {
-  color: $red;
-}
+// .sample {
+//   color: $red;
+// }
 </style>
