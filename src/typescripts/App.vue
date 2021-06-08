@@ -1,64 +1,42 @@
 <template>
   <div>
-    <p>
-      <!-- <img class="logo" src="./img/logo.jpg" alt="ロゴ" /> -->
-      <span class="sample">サンプルコード</span>
-    </p>
-    <MyComponent :message="$data.message" />
-    <form @submit="onSubmit">
-      <input v-model="$data.text" type="text" />
-      <button type="submit">送信</button>
-    </form>
+    <h1>チャット</h1>
+    <ul>
+      <li v-for="(msg, index) in messages" :key="index">{{ msg.message }}</li>
+    </ul>
+    <div>
+      <input type="text" @keyup.enter="sendMessage()" v-model="message" />
+    </div>
   </div>
 </template>
 
 <script>
-import socket from "./utils/socket";
-
-// components
-import MyComponent from "./components/MyComponent.vue";
+import io from "socket.io-client";
 
 export default {
-  components: {
-    MyComponent,
-  },
+  name: "room",
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data() {
     return {
-      message: "",
-      text: "",
+      messages: [],
+      // 1) サーバ連結
+      socket: io("localhost:3001"),
     };
   },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  created() {
-    socket.on("connect", () => {
-      console.log("connected!");
-    });
-
-    socket.on("send", (message) => {
-      console.log(message);
-      this.$data.message = message;
-    });
-  },
   methods: {
-    /**
-     * Enterボタンを押したとき
-     */
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    onSubmit(e) {
-      e.preventDefault();
-      socket.emit("send", this.$data.text);
+    sendMessage(message) {
+      console.log(message),
+        // 2) メッセージをサーバで送信
+        this.socket.emit("SEND_MESSAGE", { message });
     },
+  },
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  mounted() {
+    // 3) サーバの変更内容を受信
+    this.socket.on("MESSAGE", (data) => {
+      this.messages = [...this.messages, data];
+    });
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.logo {
-  width: 40px;
-}
-
-// .sample {
-//   color: $red;
-// }
-</style>
