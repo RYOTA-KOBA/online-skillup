@@ -1,12 +1,17 @@
 <template>
   <div>
     <h1>チャット</h1>
-    <ul>
-      <li v-for="(msg, index) in messages" :key="index">{{ msg.message }}</li>
+    <ul class="chat-wrapper">
+      <li class="chat-msg" v-for="(msg, index) in messages" :key="index">
+        <p>
+          {{ msg.message }}
+        </p>
+      </li>
     </ul>
-    <div>
-      <input type="text" @keyup.enter="sendMessage()" v-model="message" />
-    </div>
+
+    <form @submit.prevent="sendMessage(message)">
+      <input class="form-input" type="text" v-model="message" />
+    </form>
   </div>
 </template>
 
@@ -40,3 +45,37 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 700px;
+  overflow-y: scroll;
+}
+.chat-msg {
+  list-style: none;
+  border: 1px solid rgb(172, 172, 172);
+  border-radius: 10px;
+  background-color: rgb(228, 228, 228);
+  padding-left: 5px;
+  padding-right: 5px;
+  display: inline-block;
+  margin: 5px 0;
+  margin-right: 10px;
+}
+.chat-msg p {
+  margin: 0;
+}
+
+.form-input {
+  width: 80%;
+  height: 20px;
+  border-radius: 8px;
+  border: 1px solid rgb(99, 99, 99);
+}
+.form-input:focus {
+  outline: none;
+}
+</style>
