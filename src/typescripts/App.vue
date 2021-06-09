@@ -3,14 +3,24 @@
     <h1>チャット</h1>
     <ul class="chat-wrapper">
       <li class="chat-msg" v-for="(msg, index) in messages" :key="index">
+        <!-- <p>
+          {{ msg.name }}
+        </p> -->
         <p>
-          {{ msg.message }}
+          {{ msg }}
         </p>
       </li>
     </ul>
 
     <form @submit.prevent="sendMessage(message)">
-      <input class="form-input" type="text" v-model="message" />
+      <div class="form-name-wrap">
+        <!-- <p>名前:</p>
+        <input class="form-input" type="text" v-model="name" /> -->
+      </div>
+      <div class="form-text-wrap">
+        <p>テキスト:</p>
+        <input class="form-input" type="text" v-model="message" />
+      </div>
     </form>
   </div>
 </template>
@@ -70,12 +80,19 @@ export default {
 }
 
 .form-input {
-  width: 80%;
+  width: 60%;
   height: 20px;
   border-radius: 8px;
   border: 1px solid rgb(99, 99, 99);
+  margin-left: 20px;
 }
 .form-input:focus {
   outline: none;
+}
+.form-text-wrap {
+  display: flex;
+}
+.form-text-wrap p {
+  margin: 0;
 }
 </style>
